@@ -19,6 +19,16 @@ function HomePage() {
     }
   };
 
+  const deleteProduct = async (id) => {
+    try {
+      await axios.delete(`http://localhost:4001/products/${id}`);
+      const updateProducts = products.filter((item) => item.id !== id);
+      setProducts(updateProducts);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   useEffect(() => {
     getProductsHomePage();
   }, []);
@@ -28,8 +38,6 @@ function HomePage() {
   const clickToCreate = () => {
     navigate("/product/create");
   };
-
-  const clickToDelete = () => {};
 
   return (
     <div>
@@ -60,11 +68,19 @@ function HomePage() {
                   >
                     View
                   </button>
-                  <button className="edit-button">Edit</button>
+                  <button
+                    className="edit-button"
+                    onClick={() => navigate(`/product/edit/${product.id}`)}
+                  >
+                    Edit
+                  </button>
                 </div>
               </div>
 
-              <button className="delete-button" onClick={clickToDelete}>
+              <button
+                className="delete-button"
+                onClick={() => deleteProduct(product.id)}
+              >
                 {" "}
                 x{" "}
               </button>

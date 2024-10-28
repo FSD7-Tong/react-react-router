@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function CreateProductForm() {
   const [name, setName] = useState("");
@@ -10,6 +11,11 @@ function CreateProductForm() {
   const navigate = useNavigate();
 
   const handleCreate = (event) => {
+    event.preventDefault();
+    createProduct();
+  };
+
+  const createProduct = async () => {
     try {
       const data = {
         name: name,
@@ -17,7 +23,7 @@ function CreateProductForm() {
         image: image,
         description: description,
       };
-      event.preventDefault();
+      await axios.post("http://localhost:4001/products", data);
       navigate("/");
     } catch (error) {
       console.log(error);
